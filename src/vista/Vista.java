@@ -15,31 +15,17 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Vista extends javax.swing.JFrame {
 
-    DefaultTableModel modelo = new DefaultTableModel();
+    
 
     /**
      * Creates new form Principal
      */
     public Vista() {
         initComponents();
-        this.setLocationRelativeTo(this);
-        mostrarTabla();
 
     }
 
-    void mostrarTabla() {
-
-        modelo.addColumn("Nombre");
-        modelo.addColumn("Apellido");
-        modelo.addColumn("Edad");
-        modelo.addColumn("Sexo");
-        modelo.addColumn("Fecha");
-        this.tabla.setModel(modelo);
-
-        comboSexo.addItem("--Selecciona--");
-        comboSexo.addItem("Hombre");
-        comboSexo.addItem("Mujer");
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,6 +87,7 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        tabla.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -125,7 +112,7 @@ public class Vista extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 682, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
@@ -212,14 +199,13 @@ public class Vista extends javax.swing.JFrame {
             panelRect1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRect1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelCurves1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(507, Short.MAX_VALUE))
+                .addComponent(panelCurves1, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelRect1Layout.setVerticalGroup(
             panelRect1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRect1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(panelCurves1, javax.swing.GroupLayout.DEFAULT_SIZE, 558, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRect1Layout.createSequentialGroup()
+                .addComponent(panelCurves1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -255,43 +241,7 @@ public class Vista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        String Datos[] = new String[5];
-        String dia = Integer.toString(jFecha.getCalendar().get(Calendar.DAY_OF_MONTH));
-        String mes = Integer.toString(jFecha.getCalendar().get(Calendar.MONTH) + 1);
-        String año = Integer.toString(jFecha.getCalendar().get(Calendar.YEAR));
-        String fecha = (dia + " / " + mes + " / " + año);
         
-        //        botones.add(btnHombre);
-        //        botones.add(btnMujer);
-
-        Datos[0] = txtNombre.getText();
-
-        Datos[1] = txtApellido.getText();
-
-        Datos[2] = txtEdad.getText();
-
-        //RadioBotones
-        //        if (btnHombre.isSelected()) {
-        //            Datos[3] = "Hombre";
-        //        } else {
-        //            if (btnMujer.isSelected()) {
-        //                Datos[3] = "Mujer";
-        //            } else {
-        //                Datos[3] = "No se selecciono";
-        //            }
-        //        }
-        //ComboBox
-        if (comboSexo.getSelectedItem().toString().equals("--Selecciona--")) {
-            JOptionPane.showMessageDialog(null, "Debes elegir un sexo");
-        } else {
-            txtEdad.setText("");
-            txtNombre.setText("");
-            txtApellido.setText("");
-            Datos[3] = comboSexo.getSelectedItem().toString();
-            Datos[4] = fecha;
-            modelo.addRow(Datos);
-
-        }
 
     }//GEN-LAST:event_btnEnviarActionPerformed
 
@@ -333,9 +283,9 @@ public class Vista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup botones;
-    private javax.swing.JButton btnEnviar;
-    private javax.swing.JComboBox<String> comboSexo;
-    private com.toedter.calendar.JDateChooser jFecha;
+    public static javax.swing.JButton btnEnviar;
+    public static javax.swing.JComboBox<String> comboSexo;
+    public static com.toedter.calendar.JDateChooser jFecha;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel7;
@@ -348,9 +298,9 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.edisoncor.gui.panel.PanelCurves panelCurves1;
     private org.edisoncor.gui.panel.PanelRect panelRect1;
-    private javax.swing.JTable tabla;
-    private javax.swing.JTextField txtApellido;
-    private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtNombre;
+    public static javax.swing.JTable tabla;
+    public static javax.swing.JTextField txtApellido;
+    public static javax.swing.JTextField txtEdad;
+    public static javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
