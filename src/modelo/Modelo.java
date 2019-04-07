@@ -6,16 +6,35 @@ import java.util.Calendar;
 import javax.swing.JOptionPane;
 import vista.Vista;
 import static vista.Vista.comboSexo;
+import java.sql.*;
 
 public class Modelo {
 
     DefaultTableModel modelo = new DefaultTableModel();
-
     Vista v;
     Controlador c;
 
+    Connection cn;
+    Connection conn = Conexion();
+
     public void cargarMetodos() {
         mostrarTabla();
+    }
+
+    public Connection Conexion() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = DriverManager.getConnection("jdbc:mysql://localhost/sistema", "root", "");
+            System.out.println("Conexion Exitosa");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return cn;
+    }
+
+    public static void main(String[] args) {
+        Modelo m = new Modelo();
+        m.Conexion();
     }
 
     void mostrarTabla() {
@@ -34,41 +53,34 @@ public class Modelo {
 
     public void enviarDatos() {
 
-        String Datos[] = new String[5];
         String dia = Integer.toString(v.jFecha.getCalendar().get(Calendar.DAY_OF_MONTH));
         String mes = Integer.toString(v.jFecha.getCalendar().get(Calendar.MONTH) + 1);
         String año = Integer.toString(v.jFecha.getCalendar().get(Calendar.YEAR));
         String fecha = (dia + " / " + mes + " / " + año);
 
-        //        botones.add(btnHombre);
-        //        botones.add(btnMujer);
-        Datos[0] = v.txtNombre.getText();
+        try {
 
-        Datos[1] = v.txtApellido.getText();
+            PreparedStatement pst = conn.prepareStatement("INSERT INTO usuarios (Nombre,Apellido,Edad,Sexo,Fecha)"
+                    + "VALUES(?,?,?,?,?)");
 
-        Datos[2] = v.txtEdad.getText();
+            pst.setString(1, v.txtNombre.getText());
+            pst.setString(2, v.txtApellido.getText());
+            pst.setString(3, v.txtEdad.getText());
 
-        //RadioBotones
-        //        if (btnHombre.isSelected()) {
-        //            Datos[3] = "Hombre";
-        //        } else {
-        //            if (btnMujer.isSelected()) {
-        //                Datos[3] = "Mujer";
-        //            } else {
-        //                Datos[3] = "No se selecciono";
-        //            }
-        //        }
-        //ComboBox
-        if (v.comboSexo.getSelectedItem().toString().equals("--Selecciona--")) {
-            JOptionPane.showMessageDialog(null, "Debes elegir un sexo");
-        } else {
-            v.txtEdad.setText("");
-            v.txtNombre.setText("");
-            v.txtApellido.setText("");
-            Datos[3] = comboSexo.getSelectedItem().toString();
-            Datos[4] = fecha;
-            modelo.addRow(Datos);
-
+            if (v.comboSexo.getSelectedItem().toString().equals("--Selecciona--")) {
+                JOptionPane.showMessageDialog(null, "Debes elegir un sexo");
+            } else {
+                v.txtEdad.setText("");
+                v.txtNombre.setText("");
+                v.txtApellido.setText("");
+                pst.setString(4, comboSexo.getSelectedItem().toString() );
+                pst.setString(5, fecha);
+                pst.executeUpdate();
+                
+                JOptionPane.showMessageDialog(null, "Datos Guardados");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Datos no Guardados");
         }
     }
 }
