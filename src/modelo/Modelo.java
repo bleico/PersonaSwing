@@ -15,7 +15,7 @@ public class Modelo {
     Connection conn = conexion();
 
     public void cargarMetodos() {
-        mostrarTabla();
+        mostrarTabla("");
     }
 
     public Connection conexion() {
@@ -29,6 +29,15 @@ public class Modelo {
         }
         return cn;
     }
+    
+    public void buscar() {
+        if(v.txtID.equals("")){
+             JOptionPane.showMessageDialog(null, "Campo vacio");
+        }
+        else {
+            mostrarTabla(v.txtID.getText());
+        }
+    }
 
     public void eliminar() {
         int fila = v.tabla.getSelectedRow();
@@ -39,9 +48,9 @@ public class Modelo {
                 PreparedStatement pst = conn.prepareStatement("DELETE FROM usuarios WHERE ID = '"
                         + id + "' ");
                 pst.executeUpdate();
-                mostrarTabla();
+                mostrarTabla("");
                 JOptionPane.showMessageDialog(null, "Dato Eliminado");
-                
+
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Dato no eliminado\n" + e);
             }
@@ -62,7 +71,7 @@ public class Modelo {
                     + "WHERE ID = '" + id + "'");
 
             pst.executeUpdate();
-            mostrarTabla();
+            mostrarTabla("");
             JOptionPane.showMessageDialog(null, "Datos Aactualizados");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
@@ -85,7 +94,7 @@ public class Modelo {
         }
     }
 
-    void mostrarTabla() {
+    void mostrarTabla(String valor) {
 
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.addColumn("ID");
@@ -100,7 +109,15 @@ public class Modelo {
         v.comboSexo.addItem("Hombre");
         v.comboSexo.addItem("Mujer");
 
-        String sql = "SELECT * FROM usuarios";
+        String sql = "";
+        if (valor.equals("")) {
+
+            sql = "SELECT * FROM usuarios";
+        }
+        else{
+            sql = "SELECT * FROM usuarios WHERE ID= '" + valor + "'";
+        }
+
         String datos[] = new String[6];
 
         try {
@@ -149,7 +166,7 @@ public class Modelo {
                 pst.setString(5, fecha);
                 pst.executeUpdate();
 
-                mostrarTabla();
+                mostrarTabla("");
 
                 JOptionPane.showMessageDialog(null, "Datos Guardados");
             }
