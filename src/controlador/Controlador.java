@@ -21,6 +21,7 @@ public class Controlador implements ActionListener {
         this.v.btnEnviar.addActionListener(this);
         this.v.btnConsultar.addActionListener(this);
         this.v.btnActualizar.addActionListener(this);
+        this.v.btnEliminar.addActionListener(this);
     }
     
     public void iniciar() {
@@ -40,21 +41,28 @@ public class Controlador implements ActionListener {
             try {
                 m.enviarDatos();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null,"No se pudo enviar" + ex);
+                JOptionPane.showMessageDialog(null,"No se pudo enviar\n" + ex);
             }
         }
         else if (v.btnConsultar == e.getSource()) {
             try {
                 m.consultar();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "No se pudo consultar" + ex);
+                JOptionPane.showMessageDialog(null, "No se pudo consultar\n" + ex);
             }
         }
         else if(v.btnActualizar == e.getSource()) {
             try {
                 m.actualizar();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, "No se pudo actualizar" + ex);
+                JOptionPane.showMessageDialog(null, "No se pudo actualizar\n" + ex);
+            }
+        }
+        else if (v.btnEliminar == e.getSource()) {
+            try {
+                m.eliminar();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "No se pudo eliminar\n" + ex);
             }
         }
          
