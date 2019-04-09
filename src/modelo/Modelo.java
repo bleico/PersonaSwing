@@ -30,6 +30,26 @@ public class Modelo {
         return cn;
     }
 
+    public void eliminar() {
+        int fila = v.tabla.getSelectedRow();
+
+        if (fila >= 0) {
+            try {
+                String id = v.tabla.getValueAt(fila, 0).toString();
+                PreparedStatement pst = conn.prepareStatement("DELETE FROM usuarios WHERE ID = '"
+                        + id + "' ");
+                pst.executeUpdate();
+                mostrarTabla();
+                JOptionPane.showMessageDialog(null, "Dato Eliminado");
+                
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, "Dato no eliminado\n" + e);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecciona una fila");
+        }
+    }
+
     public void actualizar() {
         String id = v.txtID.getText();
         try {
