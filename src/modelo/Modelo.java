@@ -10,7 +10,6 @@ import java.sql.*;
 
 public class Modelo {
 
-    DefaultTableModel modelo = new DefaultTableModel();
     Vista v;
     Controlador c;
 
@@ -39,6 +38,8 @@ public class Modelo {
 
     void mostrarTabla() {
 
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
         modelo.addColumn("Nombre");
         modelo.addColumn("Apellido");
         modelo.addColumn("Edad");
@@ -49,6 +50,28 @@ public class Modelo {
         v.comboSexo.addItem("--Selecciona--");
         v.comboSexo.addItem("Hombre");
         v.comboSexo.addItem("Mujer");
+        
+        String sql = "SELECT * FROM usuarios";
+        String datos[] = new String[6];
+        
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            
+            while (rs.next()) {                
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
+                modelo.addRow(datos);
+            }
+            
+            v.tabla.setModel(modelo);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,"No se pudo mostrar los datos\n" + e);
+        }
     }
 
     public void enviarDatos() {
@@ -76,6 +99,8 @@ public class Modelo {
                 pst.setString(4, comboSexo.getSelectedItem().toString() );
                 pst.setString(5, fecha);
                 pst.executeUpdate();
+                
+                mostrarTabla();
                 
                 JOptionPane.showMessageDialog(null, "Datos Guardados");
             }
