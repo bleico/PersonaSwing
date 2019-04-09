@@ -23,6 +23,7 @@ public class Controlador implements ActionListener {
         this.v = v;
         this.v.btnEnviar.addActionListener(this);
         this.v.btnConsultar.addActionListener(this);
+        this.v.btnActualizar.addActionListener(this);
     }
     
     public void iniciar() {
