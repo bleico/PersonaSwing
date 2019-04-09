@@ -14,13 +14,13 @@ public class Modelo {
     Controlador c;
 
     Connection cn;
-    Connection conn = Conexion();
+    Connection conn = conexion();
 
     public void cargarMetodos() {
         mostrarTabla();
     }
 
-    public Connection Conexion() {
+    public Connection conexion() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost/sistema", "root", "");
@@ -30,10 +30,40 @@ public class Modelo {
         }
         return cn;
     }
+    
+    public void actualizar(){
+        String id = v.txtID.getText();
+        try {
+            PreparedStatement pst = conn.prepareStatement("UPDATE usuario SET "
+                + "Nombre = '" + v.txtNombre.getText() + "',"
+                + "Apellido = '" + v.txtApellido.getText() + "',"
+                + "Edad = '" + v.txtEdad.getText() + "',"
+                + "Sexo = '" + v.comboSexo.getSelectedItem() + "',"
+                + "Fecha = '" + v.txtFecha.getText() + "',"
+                + "WHERE ID = '" + id + "'");
+            
+            pst.executeUpdate();
+            mostrarTabla();
+            JOptionPane.showMessageDialog(null, "Datos Aactualizados");
+        } catch (SQLException e) {
+        }
+    }
 
-    public static void main(String[] args) {
-        Modelo m = new Modelo();
-        m.Conexion();
+    public void consultar() {
+        int fila = v.tabla.getSelectedRow();
+        
+        if(fila>= 0){
+            v.txtID.setText(v.tabla.getValueAt(fila, 0).toString());
+            v.txtNombre.setText(v.tabla.getValueAt(fila, 1).toString());
+            v.txtApellido.setText(v.tabla.getValueAt(fila, 2).toString());
+            v.txtEdad.setText(v.tabla.getValueAt(fila, 3).toString());
+            v.comboSexo.setSelectedItem(v.tabla.getValueAt(fila, 4).toString());
+            v.txtFecha.setText(v.tabla.getValueAt(fila, 5).toString());
+            v.jFecha.setDateFormatString(v.tabla.getValueAt(fila, 5).toString());
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Selecciona una fila");
+        }
     }
 
     void mostrarTabla() {
