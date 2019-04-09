@@ -14,9 +14,6 @@ public class Controlador implements ActionListener {
     private Vista v;
     private Login l;
     
-    public Controlador() {
-    }
-    
     public Controlador(Modelo m, Vista v) {
         
         this.m = m;
@@ -43,7 +40,7 @@ public class Controlador implements ActionListener {
             try {
                 m.enviarDatos();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(null, ex);
+                JOptionPane.showMessageDialog(null,"No se pudo enviar" + ex);
             }
         }
         else if (v.btnConsultar == e.getSource()) {
@@ -53,7 +50,13 @@ public class Controlador implements ActionListener {
                 JOptionPane.showMessageDialog(null, "No se pudo consultar" + ex);
             }
         }
-        
+        else if(v.btnActualizar == e.getSource()) {
+            try {
+                m.actualizar();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "No se pudo actualizar" + ex);
+            }
+        }
          
     }
     
