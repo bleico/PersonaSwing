@@ -22,6 +22,7 @@ public class Controlador implements ActionListener {
         this.m = m;
         this.v = v;
         this.v.btnEnviar.addActionListener(this);
+        this.v.btnConsultar.addActionListener(this);
     }
     
     public void iniciar() {
@@ -44,6 +45,15 @@ public class Controlador implements ActionListener {
                 JOptionPane.showMessageDialog(null, ex);
             }
         }
+        else if (v.btnConsultar == e.getSource()) {
+            try {
+                m.consultar();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "No se pudo consultar" + ex);
+            }
+        }
+        
+         
     }
     
 }
