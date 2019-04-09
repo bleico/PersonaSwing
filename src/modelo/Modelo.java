@@ -11,8 +11,6 @@ import java.sql.*;
 public class Modelo {
 
     Vista v;
-    Controlador c;
-
     Connection cn;
     Connection conn = conexion();
 
@@ -21,6 +19,7 @@ public class Modelo {
     }
 
     public Connection conexion() {
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
             cn = DriverManager.getConnection("jdbc:mysql://localhost/sistema", "root", "");
@@ -30,29 +29,30 @@ public class Modelo {
         }
         return cn;
     }
-    
-    public void actualizar(){
+
+    public void actualizar() {
         String id = v.txtID.getText();
         try {
-            PreparedStatement pst = conn.prepareStatement("UPDATE usuario SET "
-                + "Nombre = '" + v.txtNombre.getText() + "',"
-                + "Apellido = '" + v.txtApellido.getText() + "',"
-                + "Edad = '" + v.txtEdad.getText() + "',"
-                + "Sexo = '" + v.comboSexo.getSelectedItem() + "',"
-                + "Fecha = '" + v.txtFecha.getText() + "',"
-                + "WHERE ID = '" + id + "'");
-            
+            PreparedStatement pst = conn.prepareStatement("UPDATE usuarios SET "
+                    + "Nombre = '" + v.txtNombre.getText() + "',"
+                    + "Apellido = '" + v.txtApellido.getText() + "',"
+                    + "Edad = '" + v.txtEdad.getText() + "',"
+                    + "Sexo = '" + v.comboSexo.getSelectedItem() + "',"
+                    + "Fecha = '" + v.txtFecha.getText() + "' "
+                    + "WHERE ID = '" + id + "'");
+
             pst.executeUpdate();
             mostrarTabla();
             JOptionPane.showMessageDialog(null, "Datos Aactualizados");
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }
 
     public void consultar() {
         int fila = v.tabla.getSelectedRow();
-        
-        if(fila>= 0){
+
+        if (fila >= 0) {
             v.txtID.setText(v.tabla.getValueAt(fila, 0).toString());
             v.txtNombre.setText(v.tabla.getValueAt(fila, 1).toString());
             v.txtApellido.setText(v.tabla.getValueAt(fila, 2).toString());
@@ -60,8 +60,7 @@ public class Modelo {
             v.comboSexo.setSelectedItem(v.tabla.getValueAt(fila, 4).toString());
             v.txtFecha.setText(v.tabla.getValueAt(fila, 5).toString());
             v.jFecha.setDateFormatString(v.tabla.getValueAt(fila, 5).toString());
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Selecciona una fila");
         }
     }
@@ -80,15 +79,15 @@ public class Modelo {
         v.comboSexo.addItem("--Selecciona--");
         v.comboSexo.addItem("Hombre");
         v.comboSexo.addItem("Mujer");
-        
+
         String sql = "SELECT * FROM usuarios";
         String datos[] = new String[6];
-        
+
         try {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
-            
-            while (rs.next()) {                
+
+            while (rs.next()) {
                 datos[0] = rs.getString(1);
                 datos[1] = rs.getString(2);
                 datos[2] = rs.getString(3);
@@ -97,10 +96,10 @@ public class Modelo {
                 datos[5] = rs.getString(6);
                 modelo.addRow(datos);
             }
-            
+
             v.tabla.setModel(modelo);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"No se pudo mostrar los datos\n" + e);
+            JOptionPane.showMessageDialog(null, "No se pudo mostrar los datos\n" + e);
         }
     }
 
@@ -126,16 +125,16 @@ public class Modelo {
                 v.txtEdad.setText("");
                 v.txtNombre.setText("");
                 v.txtApellido.setText("");
-                pst.setString(4, comboSexo.getSelectedItem().toString() );
+                pst.setString(4, comboSexo.getSelectedItem().toString());
                 pst.setString(5, fecha);
                 pst.executeUpdate();
-                
+
                 mostrarTabla();
-                
+
                 JOptionPane.showMessageDialog(null, "Datos Guardados");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Datos no Guardados");
+            JOptionPane.showMessageDialog(null, "Datos no Guardados\n" + e);
         }
     }
 }
