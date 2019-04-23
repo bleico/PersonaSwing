@@ -29,12 +29,11 @@ public class Modelo {
         }
         return cn;
     }
-    
+
     public void buscar() {
-        if(v.txtID.equals("")){
-             JOptionPane.showMessageDialog(null, "Campo vacio");
-        }
-        else {
+        if (v.txtID.equals("")) {
+            JOptionPane.showMessageDialog(null, "Campo vacio");
+        } else {
             mostrarTabla(v.txtID.getText());
         }
     }
@@ -61,20 +60,25 @@ public class Modelo {
 
     public void actualizar() {
         String id = v.txtID.getText();
-        try {
-            PreparedStatement pst = conn.prepareStatement("UPDATE usuarios SET "
-                    + "Nombre = '" + v.txtNombre.getText() + "',"
-                    + "Apellido = '" + v.txtApellido.getText() + "',"
-                    + "Edad = '" + v.txtEdad.getText() + "',"
-                    + "Sexo = '" + v.comboSexo.getSelectedItem() + "',"
-                    + "Fecha = '" + v.txtFecha.getText() + "' "
-                    + "WHERE ID = '" + id + "'");
 
-            pst.executeUpdate();
-            mostrarTabla("");
-            JOptionPane.showMessageDialog(null, "Datos Aactualizados");
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
+        if (v.txtNombre.getText().equals("") || v.txtApellido.getText().equals("") || v.txtEdad.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Faltan campos por rellenar");
+        } else {
+            try {
+                PreparedStatement pst = conn.prepareStatement("UPDATE usuarios SET "
+                        + "Nombre = '" + v.txtNombre.getText() + "',"
+                        + "Apellido = '" + v.txtApellido.getText() + "',"
+                        + "Edad = '" + v.txtEdad.getText() + "',"
+                        + "Sexo = '" + v.comboSexo.getSelectedItem() + "',"
+                        + "Fecha = '" + v.txtFecha.getText() + "' "
+                        + "WHERE ID = '" + id + "'");
+
+                pst.executeUpdate();
+                mostrarTabla("");
+                JOptionPane.showMessageDialog(null, "Datos Aactualizados");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
+            }
         }
     }
 
@@ -113,8 +117,7 @@ public class Modelo {
         if (valor.equals("")) {
 
             sql = "SELECT * FROM usuarios";
-        }
-        else{
+        } else {
             sql = "SELECT * FROM usuarios WHERE ID= '" + valor + "'";
         }
 
@@ -147,31 +150,36 @@ public class Modelo {
         String año = Integer.toString(v.jFecha.getCalendar().get(Calendar.YEAR));
         String fecha = (dia + " / " + mes + " / " + año);
 
-        try {
+        if (v.txtNombre.getText().equals("") || v.txtApellido.getText().equals("") || v.txtEdad.getText().equals("")) {
 
-            PreparedStatement pst = conn.prepareStatement("INSERT INTO usuarios (Nombre,Apellido,Edad,Sexo,Fecha)"
-                    + "VALUES(?,?,?,?,?)");
+            JOptionPane.showMessageDialog(null, "Faltan campos por rellenar");
+        } else {
+            try {
 
-            pst.setString(1, v.txtNombre.getText());
-            pst.setString(2, v.txtApellido.getText());
-            pst.setString(3, v.txtEdad.getText());
+                PreparedStatement pst = conn.prepareStatement("INSERT INTO usuarios (Nombre,Apellido,Edad,Sexo,Fecha)"
+                        + "VALUES(?,?,?,?,?)");
 
-            if (v.comboSexo.getSelectedItem().toString().equals("--Selecciona--")) {
-                JOptionPane.showMessageDialog(null, "Debes elegir un sexo");
-            } else {
-                v.txtEdad.setText("");
-                v.txtNombre.setText("");
-                v.txtApellido.setText("");
-                pst.setString(4, comboSexo.getSelectedItem().toString());
-                pst.setString(5, fecha);
-                pst.executeUpdate();
+                pst.setString(1, v.txtNombre.getText());
+                pst.setString(2, v.txtApellido.getText());
+                pst.setString(3, v.txtEdad.getText());
 
-                mostrarTabla("");
+                if (v.comboSexo.getSelectedItem().toString().equals("--Selecciona--")) {
+                    JOptionPane.showMessageDialog(null, "Debes elegir un sexo");
+                } else {
+                    v.txtEdad.setText("");
+                    v.txtNombre.setText("");
+                    v.txtApellido.setText("");
+                    pst.setString(4, comboSexo.getSelectedItem().toString());
+                    pst.setString(5, fecha);
+                    pst.executeUpdate();
 
-                JOptionPane.showMessageDialog(null, "Datos Guardados");
+                    mostrarTabla("");
+
+                    JOptionPane.showMessageDialog(null, "Datos Guardados");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Datos no Guardados\n" + e);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Datos no Guardados\n" + e);
         }
     }
 }
