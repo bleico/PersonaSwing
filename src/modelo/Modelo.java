@@ -7,6 +7,11 @@ import javax.swing.JOptionPane;
 import vista.Vista;
 import static vista.Vista.comboSexo;
 import java.sql.*;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class Modelo {
 
@@ -30,6 +35,18 @@ public class Modelo {
         return cn;
     }
 
+        public void GenerarReporte(){
+            try {
+                //Ruta donde se encuentra el archivo de reporte
+                String ruta = "/home/bleider/NetBeansProjects/Sistema/src/vista/ReporteUsuarios.jrxml";
+                JasperReport rj = JasperCompileManager.compileReport(ruta); //compila el reporte
+                JasperPrint mr = JasperFillManager.fillReport(rj, null, cn);
+                JasperViewer.viewReport(mr);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "No se pudo mostrar el Reporte");
+            }
+        }
+    
     public void buscar() {
         if (v.txtID.equals("")) {
             JOptionPane.showMessageDialog(null, "Campo vacio");
