@@ -23,6 +23,7 @@ public class Controlador implements ActionListener {
         this.v.btnActualizar.addActionListener(this);
         this.v.btnEliminar.addActionListener(this);
         this.v.btnBuscar.addActionListener(this);
+        this.v.btnReporte.addActionListener(this);
     }
     
     public void iniciar() {
@@ -71,6 +72,13 @@ public class Controlador implements ActionListener {
                 m.buscar();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "No se pudo buscar\n" + ex);
+            }
+        }
+        else if (v.btnReporte == e.getSource()) {
+            try{
+                m.buscar();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "No se pudo mostrar el Reporte\n" + ex);
             }
         }
          
