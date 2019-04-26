@@ -76,7 +76,7 @@ public class Controlador implements ActionListener {
         }
         else if (v.btnReporte == e.getSource()) {
             try{
-                m.buscar();
+                m.GenerarReporte();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, "No se pudo mostrar el Reporte\n" + ex);
             }
