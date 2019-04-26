@@ -38,10 +38,12 @@ public class Modelo {
         public void GenerarReporte(){
             try {
                 //Ruta donde se encuentra el archivo de reporte
-                String ruta = "/home/bleider/NetBeansProjects/Sistema/src/vista/ReporteUsuarios.jrxml";
+                String ruta = "C:\\Users\\bleid\\OneDrive\\Programacion\\Java\\TCS\\PersonaSwing\\src\\"
+                        + "vista\\ReporteUsuarios.jrxml";
                 JasperReport rj = JasperCompileManager.compileReport(ruta); //compila el reporte
                 JasperPrint mr = JasperFillManager.fillReport(rj, null, cn);
-                JasperViewer.viewReport(mr);
+                JasperViewer view = new JasperViewer(mr, false);
+                view.setVisible(true);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "No se pudo mostrar el Reporte");
             }
