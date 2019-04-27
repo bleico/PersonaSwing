@@ -21,6 +21,7 @@ public class Modelo {
 
     public void cargarMetodos() {
         mostrarTabla("");
+        Bloquear();
     }
 
     public Connection conexion() {
@@ -35,20 +36,60 @@ public class Modelo {
         return cn;
     }
 
-        public void GenerarReporte(){
-            try {
-                //Ruta donde se encuentra el archivo de reporte
-                String ruta = "C:\\Users\\bleid\\OneDrive\\Programacion\\Java\\TCS\\PersonaSwing\\src\\"
-                        + "vista\\ReporteUsuarios.jrxml";
-                JasperReport rj = JasperCompileManager.compileReport(ruta); //compila el reporte
-                JasperPrint mr = JasperFillManager.fillReport(rj, null, cn);
-                JasperViewer view = new JasperViewer(mr, false);
-                view.setVisible(true);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "No se pudo mostrar el Reporte");
-            }
+    public void Bloquear() {
+
+        v.txtNombre.setEnabled(false);
+        v.txtApellido.setEnabled(false);
+        v.txtEdad.setEnabled(false);
+        v.comboSexo.setEnabled(false);
+        v.txtFecha.setEnabled(false);
+        v.jFecha.setEnabled(false);
+        v.btnEnviar.setEnabled(false);
+        v.btnActualizar.setEnabled(false);
+        v.btnCancelar.setEnabled(false);
+        v.btnNuevo.setEnabled(true);
+    }
+
+    public void Desbloquear() {
+
+        v.txtNombre.setEnabled(true);
+        v.txtApellido.setEnabled(true);
+        v.txtEdad.setEnabled(true);
+        v.comboSexo.setEnabled(true);
+        v.txtFecha.setEnabled(true);
+        v.jFecha.setEnabled(true);
+        v.btnEnviar.setEnabled(true);
+        v.btnActualizar.setEnabled(false);
+        v.btnCancelar.setEnabled(true);
+        v.btnNuevo.setEnabled(false);
+    }
+
+    public void Cancelar() {
+
+        Bloquear();
+        v.txtID.setText("");
+        v.txtNombre.setText("");
+        v.txtApellido.setText("");
+        v.txtEdad.setText("");
+        v.comboSexo.setSelectedItem("--Selecciona--");
+        v.txtFecha.setText("");
+        v.jFecha.setDateFormatString("");
+    }
+
+    public void GenerarReporte() {
+        try {
+            //Ruta donde se encuentra el archivo de reporte
+            String ruta = "C:\\Users\\bleid\\OneDrive\\Programacion\\Java\\TCS\\PersonaSwing\\src\\"
+                    + "vista\\ReporteUsuarios.jrxml";
+            JasperReport rj = JasperCompileManager.compileReport(ruta); //compila el reporte
+            JasperPrint mr = JasperFillManager.fillReport(rj, null, cn);
+            JasperViewer view = new JasperViewer(mr, false);
+            view.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se pudo mostrar el Reporte");
         }
-    
+    }
+
     public void buscar() {
         if (v.txtID.equals("")) {
             JOptionPane.showMessageDialog(null, "Campo vacio");
@@ -102,6 +143,9 @@ public class Modelo {
     }
 
     public void consultar() {
+        Desbloquear();
+        v.btnEnviar.setEnabled(false);
+        v.btnActualizar.setEnabled(true);
         int fila = v.tabla.getSelectedRow();
 
         if (fila >= 0) {
